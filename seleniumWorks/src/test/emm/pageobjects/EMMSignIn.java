@@ -34,8 +34,8 @@ public class EMMSignIn extends EMMPage<EMMSignIn> {
 		submitIdButton.click();
 	}
 	
-	public boolean isLoginError(){
-		return errorBox.isDisplayed();
+	public String isLoginError(){
+		return errorBox.getText().toString();
 	}
 
 }

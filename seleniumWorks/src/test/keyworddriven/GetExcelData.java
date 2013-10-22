@@ -1,0 +1,149 @@
+package test.keyworddriven;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Hashtable;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+
+public class GetExcelData {
+	static Sheet wrkSheet;
+	static Workbook wrkBook = null;
+	
+	public GetExcelData(String FilePath) throws BiffException, IOException{
+		wrkBook = Workbook.getWorkbook(new File(FilePath));
+	}
+	
+	public String[][] extractDataFromExcel(String sheet){
+		wrkSheet = wrkBook.getSheet(sheet);
+		String[][] steps = new String[wrkSheet.getColumns()][wrkSheet.getRows()];
+		for(int i = 0; i< wrkSheet.getRows();i++){
+			for(int j=0;j<wrkSheet.getColumns();j++){
+				steps[j][i] = wrkSheet.getCell(j, i).getContents();
+				System.out.print(steps[j][i]+" ");
+			}
+			System.out.println();
+		}
+		return steps;
+	}
+	
+	public static void main(String[] args) throws BiffException, IOException{
+		/*File f = new File("EMMDataDriven.xls");
+		String fname = f.getAbsolutePath();
+		System.out.println(fname);*/
+		GetExcelData ge = new GetExcelData("C:\\Users\\POO\\git\\seleniumWorks\\seleniumWorks\\src\\test\\keyworddriven\\KeywordDriven.xls");
+		
+		String[][] steps;
+		steps = ge.extractDataFromExcel("Sheet1");
+		
+		WebDriver wd = null;
+		System.out.println(steps[1][0]);
+		for(int i = 1; i< steps.length; i++){
+			if(steps[0][i].equalsIgnoreCase("Y")){
+				if(steps[4][i]=="open_browser"){
+					System.out.println(steps[4][i]);
+					wd = open_browser(steps[7][i]);
+					
+				}else if(steps[4][i]=="navigate_to"){
+					System.out.println(steps[4][i]);
+					navigate_to(wd,steps[7][i]);
+					
+				}else if(steps[4][i]=="refresh"){
+					System.out.println(steps[4][i]);
+					refresh(wd);
+					
+				}else if(steps[4][i]=="send_keys"){
+					System.out.println(steps[4][i]);
+					send_keys(wd,steps[5][i],steps[6][i],steps[7][i]);
+					
+				}else if(steps[4][i]=="click_element"){
+					System.out.println(steps[4][i]);
+					click_element(wd,steps[5][i],steps[6][i]);
+					
+				}else if(steps[4][i]=="verify_element"){
+					System.out.println(steps[4][i]);
+					verify_element(wd,steps[5][i],steps[6][i]);
+					
+				}else if(steps[4][i]=="close_browser"){
+					System.out.println(steps[4][i]);
+					close_browser(wd);
+				}else{
+					System.out.println(steps[4][i]);
+				}
+			}
+		}
+	}
+
+	public static void close_browser(WebDriver wd) {
+		wd.close();
+		wd.quit();
+	}
+
+	public static void verify_element(WebDriver wd, String locate,
+			String LocString) {
+		if("id".equalsIgnoreCase(locate)){
+			System.out.println(wd.findElement(By.id(LocString)).getText());
+		}
+		
+	}
+
+	public static void click_element(WebDriver wd, String locate,
+			String locString) {
+		if("name".equalsIgnoreCase(locate)){
+			wd.findElement(By.name(locString)).click();
+		}
+		
+	}
+
+	public static void send_keys(WebDriver wd, String locate, String locString,
+			String data) {
+		if("xpath".equalsIgnoreCase(locate)){
+			wd.findElement(By.xpath(locString)).clear();
+			wd.findElement(By.xpath(locString)).sendKeys(data);
+		}
+		if("name".equalsIgnoreCase(locate)){
+			wd.findElement(By.name(locString)).clear();
+			wd.findElement(By.name(locString)).sendKeys(data);
+			
+		}
+		if("id".equalsIgnoreCase(locate)){
+			wd.findElement(By.id(locString)).clear();
+			wd.findElement(By.id(locString)).sendKeys(data);
+		}
+		
+	}
+
+	public static void refresh(WebDriver wd) {
+		wd.navigate().refresh();
+		
+	}
+
+	public static void navigate_to(WebDriver wd, String url) {
+		wd.get(url);
+		
+	}
+
+	public static WebDriver open_browser(String browserType) {
+		WebDriver wd1 = null;
+		if(browserType.equalsIgnoreCase("FireFox")){
+			wd1 = new FirefoxDriver();
+		}
+		if(browserType.equalsIgnoreCase("IE")){
+			wd1 = new InternetExplorerDriver();
+		}
+		if(browserType.equalsIgnoreCase("chrome")){
+			wd1 = new ChromeDriver();
+		}
+		
+		return wd1;
+	}
+
+}

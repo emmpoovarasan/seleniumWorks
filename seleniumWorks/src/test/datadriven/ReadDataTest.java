@@ -1,9 +1,11 @@
 package test.datadriven;
 
+import java.io.File;
 import java.io.IOException;
 
 import jxl.read.biff.BiffException;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -18,7 +20,8 @@ public class ReadDataTest {
 	//Constructor to initialze Excel for Data source
 	public ReadDataTest() throws BiffException, IOException{
 		//Let's assume we have only one Excel File which holds all Testcases. weird :)  Just for Demo !!!
-		xlsUtil = new ExcelSheetDriver("E:\\Data.xls");
+		File f = new File("Data.xls");
+		xlsUtil = new ExcelSheetDriver(f.getAbsolutePath());
 		//Load the Excel Sheet Col in to Dictionary for Further use in our Test cases.
 		xlsUtil.ColumnDictionary();
 	}
@@ -52,5 +55,11 @@ public class ReadDataTest {
 			
 		}
 		
+	}
+	
+	@After
+	public void CloseBrowser(){
+		driver.close();
+		driver.quit();
 	}
 }

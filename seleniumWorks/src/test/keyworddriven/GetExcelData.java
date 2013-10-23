@@ -25,14 +25,14 @@ public class GetExcelData {
 	public static String[][] extractDataFromExcel(String sheet) throws ArrayIndexOutOfBoundsException {
 		wrkSheet = wrkBook.getSheet(sheet);
 		String[][] steps = new String[wrkSheet.getRows()][wrkSheet.getColumns()];
-		System.out.println("Rows - "+wrkSheet.getRows()+" Columns - "+wrkSheet.getColumns()+" Size of steps"+steps.length);
+		//System.out.println("Rows - "+wrkSheet.getRows()+" Columns - "+wrkSheet.getColumns()+" Size of steps"+steps.length);
 		
 		for(int i=0; i < steps.length; i++){
 			for(int j=0; j < steps[i].length; j++){
 				steps[i][j] = wrkSheet.getCell(j, i).getContents();
-				System.out.print(steps[i][j]+" ");
+				//System.out.print(steps[i][j]+" ");
 			}
-			System.out.println();
+			//System.out.println();
 		}
 		return steps;
 	}
@@ -93,9 +93,20 @@ public class GetExcelData {
 			String LocString) {
 		
 		if("id".equalsIgnoreCase(locate)){
-			System.out.println(wd.findElement(By.id(LocString)).getText());
+			String ActualOutput = wd.findElement(By.id(LocString)).getText();
 			try {
-				org.junit.Assert.assertEquals("Invalid password", wd.findElement(By.id(LocString)).getText());
+				if("Invalid password".equalsIgnoreCase(ActualOutput)){
+					org.junit.Assert.assertEquals("Invalid password", ActualOutput);
+					System.out.println("Expected Output: Invalid password | Actual Output: "+ActualOutput);
+				}else if("Please enter your email and password".equalsIgnoreCase(ActualOutput)){
+					org.junit.Assert.assertEquals("Please enter your email and password", ActualOutput);
+					System.out.println("Expected Output: Please enter your email and password | Actual Output: "+ActualOutput);
+				}else if("Wrong email or password".equalsIgnoreCase(ActualOutput)){
+					org.junit.Assert.assertEquals("Wrong email or password", ActualOutput);
+					System.out.println("Expected Output: Wrong email or password | Actual Output: "+ActualOutput);
+				}else{
+					System.out.println("Actual Output: "+ActualOutput);
+				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -153,7 +164,7 @@ public class GetExcelData {
 
 	public static WebDriver open_browser(String browserType) {
 		WebDriver wd1 = null;
-		System.out.println(browserType);
+		//System.out.println(browserType);
 		if(browserType.equalsIgnoreCase("FireFox")){
 			wd1 = new FirefoxDriver();
 		}

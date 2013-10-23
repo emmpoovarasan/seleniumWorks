@@ -25,7 +25,7 @@ public class TestLogin {
 		steps = GetExcelData.extractDataFromExcel("Sheet1");
 		
 		// read excel data and store string arrays
-		System.out.println(steps.length);
+		//System.out.println(steps.length);
 		/*String [][] crossword= new String[18][8];
 		for(int i=0; i < crossword.length; i++){
 			for(int j=0; j < crossword[i].length; j++){
@@ -37,34 +37,34 @@ public class TestLogin {
 		for(int i = 1; i< steps.length; i++){
 			if(steps[i][0].equalsIgnoreCase("Y")){
 				if("open_browser".equalsIgnoreCase(steps[i][4])){
-					System.out.println(steps[i][4]);
 					wd = GetExcelData.open_browser(steps[i][7]);
+					System.out.println(steps[i][3]+" -- "+steps[i][4]);
 					
 				}else if("navigate_to".equalsIgnoreCase(steps[i][4])){
-					System.out.println(steps[i][4]);
 					GetExcelData.navigate_to(wd,steps[i][7]);
+					System.out.println(steps[i][3]+" -- "+steps[i][4]);
 					
 				}else if("refresh".equalsIgnoreCase(steps[i][4])){
-					System.out.println(steps[i][4]);
 					GetExcelData.refresh(wd);
+					System.out.println(steps[i][3]+" -- "+steps[i][4]);
 					
 				}else if("send_keys".equalsIgnoreCase(steps[i][4])){
-					System.out.println(steps[i][4]);
 					GetExcelData.send_keys(wd,steps[i][5],steps[i][6],steps[i][7]);
+					System.out.println(steps[i][3]+" -- "+steps[i][4]);
 					
 				}else if("click_element".equalsIgnoreCase(steps[i][4])){
-					System.out.println(steps[i][4]);
 					GetExcelData.click_element(wd,steps[i][5],steps[i][6]);
+					System.out.println(steps[i][3]+" -- "+steps[i][4]);
 					
 				}else if("verify_element".equalsIgnoreCase(steps[i][4])){
-					System.out.println(steps[i][4]);
 					GetExcelData.verify_element(wd,steps[i][5],steps[i][6]);
+					System.out.println(steps[i][3]+" -- "+steps[i][4]);
 					
 				}else if("close_browser".equalsIgnoreCase(steps[i][4])){
-					System.out.println(steps[i][4]);
 					GetExcelData.close_browser(wd);
+					System.out.println(steps[i][3]+" -- "+steps[i][4]);
 				}else{
-					System.out.println("else--"+steps[i][4]);
+					System.out.println(steps[i][3]+" -- "+"else--"+steps[i][4]);
 				}
 			}
 		}

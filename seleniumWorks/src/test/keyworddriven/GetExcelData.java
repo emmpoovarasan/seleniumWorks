@@ -22,65 +22,67 @@ public class GetExcelData {
 		wrkBook = Workbook.getWorkbook(new File(FilePath));
 	}
 	
-	public String[][] extractDataFromExcel(String sheet){
+	public static String[][] extractDataFromExcel(String sheet) throws ArrayIndexOutOfBoundsException {
 		wrkSheet = wrkBook.getSheet(sheet);
-		String[][] steps = new String[wrkSheet.getColumns()][wrkSheet.getRows()];
-		for(int i = 0; i< wrkSheet.getRows();i++){
-			for(int j=0;j<wrkSheet.getColumns();j++){
-				steps[j][i] = wrkSheet.getCell(j, i).getContents();
-				System.out.print(steps[j][i]+" ");
+		String[][] steps = new String[wrkSheet.getRows()][wrkSheet.getColumns()];
+		System.out.println("Rows - "+wrkSheet.getRows()+" Columns - "+wrkSheet.getColumns()+" Size of steps"+steps.length);
+		
+		for(int i=0; i < steps.length; i++){
+			for(int j=0; j < steps[i].length; j++){
+				steps[i][j] = wrkSheet.getCell(j, i).getContents();
+				System.out.print(steps[i][j]+" ");
 			}
 			System.out.println();
 		}
 		return steps;
 	}
 	
-	public static void main(String[] args) throws BiffException, IOException{
-		/*File f = new File("EMMDataDriven.xls");
+	/*public static void main(String[] args) throws BiffException, IOException{
+		File f = new File("EMMDataDriven.xls");
 		String fname = f.getAbsolutePath();
-		System.out.println(fname);*/
+		System.out.println(fname);
 		GetExcelData ge = new GetExcelData("C:\\Users\\POO\\git\\seleniumWorks\\seleniumWorks\\src\\test\\keyworddriven\\KeywordDriven.xls");
 		
 		String[][] steps;
 		steps = ge.extractDataFromExcel("Sheet1");
 		
 		WebDriver wd = null;
-		System.out.println(steps[1][0]);
-		for(int i = 1; i< steps.length; i++){
+		//System.out.println(steps[1][0]);
+		for(int i = 1; i<= steps.length; i++){
 			if(steps[0][i].equalsIgnoreCase("Y")){
-				if(steps[4][i]=="open_browser"){
+				if("open_browser".equalsIgnoreCase(steps[4][i])){
 					System.out.println(steps[4][i]);
 					wd = open_browser(steps[7][i]);
 					
-				}else if(steps[4][i]=="navigate_to"){
+				}else if("navigate_to".equalsIgnoreCase(steps[4][i])){
 					System.out.println(steps[4][i]);
 					navigate_to(wd,steps[7][i]);
 					
-				}else if(steps[4][i]=="refresh"){
+				}else if("refresh".equalsIgnoreCase(steps[4][i])){
 					System.out.println(steps[4][i]);
 					refresh(wd);
 					
-				}else if(steps[4][i]=="send_keys"){
+				}else if("send_keys".equalsIgnoreCase(steps[4][i])){
 					System.out.println(steps[4][i]);
 					send_keys(wd,steps[5][i],steps[6][i],steps[7][i]);
 					
-				}else if(steps[4][i]=="click_element"){
+				}else if("click_element".equalsIgnoreCase(steps[4][i])){
 					System.out.println(steps[4][i]);
 					click_element(wd,steps[5][i],steps[6][i]);
 					
-				}else if(steps[4][i]=="verify_element"){
+				}else if("verify_element".equalsIgnoreCase(steps[4][i])){
 					System.out.println(steps[4][i]);
 					verify_element(wd,steps[5][i],steps[6][i]);
 					
-				}else if(steps[4][i]=="close_browser"){
+				}else if("close_browser".equalsIgnoreCase(steps[4][i])){
 					System.out.println(steps[4][i]);
 					close_browser(wd);
 				}else{
-					System.out.println(steps[4][i]);
+					System.out.println("else--"+steps[4][i]);
 				}
 			}
 		}
-	}
+	}*/
 
 	public static void close_browser(WebDriver wd) {
 		wd.close();
@@ -89,8 +91,22 @@ public class GetExcelData {
 
 	public static void verify_element(WebDriver wd, String locate,
 			String LocString) {
+		
 		if("id".equalsIgnoreCase(locate)){
 			System.out.println(wd.findElement(By.id(LocString)).getText());
+			try {
+				org.junit.Assert.assertEquals("Invalid password", wd.findElement(By.id(LocString)).getText());
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		if("xpath".equalsIgnoreCase(locate)){
+			try {
+				org.junit.Assert.assertEquals("Profile Completeness", wd.findElement(By.xpath(LocString)).getText());
+				System.out.println(wd.findElement(By.xpath(LocString)).getText());
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 		}
 		
 	}
@@ -99,6 +115,10 @@ public class GetExcelData {
 			String locString) {
 		if("name".equalsIgnoreCase(locate)){
 			wd.findElement(By.name(locString)).click();
+			
+		}
+		if("linkText".equalsIgnoreCase(locate)){
+			wd.findElement(By.linkText(locString)).click();
 		}
 		
 	}
@@ -133,6 +153,7 @@ public class GetExcelData {
 
 	public static WebDriver open_browser(String browserType) {
 		WebDriver wd1 = null;
+		System.out.println(browserType);
 		if(browserType.equalsIgnoreCase("FireFox")){
 			wd1 = new FirefoxDriver();
 		}

@@ -21,7 +21,7 @@ public class TestLogin {
 		
 	}
 	@Test
-	public void testLogin() throws ArrayIndexOutOfBoundsException{
+	public void testLoginWithValidAndInvalidCredentials() throws ArrayIndexOutOfBoundsException{
 		steps = GetExcelData.extractDataFromExcel("Sheet1");
 		
 		// read excel data and store string arrays

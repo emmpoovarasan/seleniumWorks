@@ -1,5 +1,6 @@
 package test.keyworddriven;
 
+import java.io.File;
 import java.io.IOException;
 
 import jxl.read.biff.BiffException;
@@ -17,7 +18,11 @@ public class TestLogin {
 	WebDriver wd = null;
 	@Before
 	public void testSetup() throws BiffException, IOException{
-		GetExcelData ge = new GetExcelData("C:\\Users\\POO\\git\\seleniumWorks\\seleniumWorks\\src\\test\\keyworddriven\\KeywordDriven.xls");
+		File f = new File("src\\test\\keyworddriven\\KeywordDriven.xls");
+		String fullFilePath = f.getAbsolutePath();
+		//System.out.println(fullFilePath);
+		//GetExcelData ge = new GetExcelData("C:\\Users\\POO\\git\\seleniumWorks\\seleniumWorks\\src\\test\\keyworddriven\\KeywordDriven.xls");
+		GetExcelData ge = new GetExcelData(fullFilePath);
 		
 	}
 	@Test

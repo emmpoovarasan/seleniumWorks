@@ -3,6 +3,7 @@ package test.keyworddriven;
 import java.io.File;
 import java.io.IOException;
 
+import junit.framework.TestCase;
 import jxl.read.biff.BiffException;
 
 import org.junit.Before;
@@ -13,7 +14,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
-public class TestLogin {
+public class TestLogin extends TestCase{
 	String[][] steps = null;
 	WebDriver wd = null;
 	@Before

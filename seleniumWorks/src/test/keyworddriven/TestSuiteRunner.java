@@ -9,6 +9,7 @@ public class TestSuiteRunner extends TestCase {
 public static Test testSuite(){
 	TestSuite suite = new TestSuite();
 	suite.addTestSuite(TestHomePage.class);
+	suite.addTestSuite(TestLogin.class);
 	return suite;
 }
 /*public static void main(String[] args){

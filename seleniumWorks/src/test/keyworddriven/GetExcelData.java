@@ -10,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
+import junit.framework.Assert;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -119,17 +120,41 @@ public class GetExcelData {
 				System.out.println(e.getMessage());
 			}
 		}
+		if("cssSelector".equalsIgnoreCase(locate)){
+			//System.out.println("Executed cssSelector : "+locate);
+			String actualOutput = null;
+			actualOutput = wd.findElement(By.cssSelector(LocString)).getText();
+			try {
+				if("Create an account".equalsIgnoreCase(actualOutput)){
+					Assert.assertEquals("Create an account", actualOutput);
+					System.out.println("Expected : Create an account --- Actual : "+actualOutput);	
+				}
+				if("Try EasyMedMobile.com for free during 30 days (1/2)".equalsIgnoreCase(actualOutput)){
+					Assert.assertEquals("Try EasyMedMobile.com for free during 30 days (1/2)", actualOutput);
+					System.out.println("Expected : Create an account --- Actual : "+actualOutput);	
+				}
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println(e.getMessage());
+			}
+			
+		}
 		
 	}
 
 	public static void click_element(WebDriver wd, String locate,
 			String locString) {
+		System.out.println("Click element string "+locString);
 		if("name".equalsIgnoreCase(locate)){
 			wd.findElement(By.name(locString)).click();
 			
 		}
 		if("linkText".equalsIgnoreCase(locate)){
 			wd.findElement(By.linkText(locString)).click();
+		}
+		if("id".equalsIgnoreCase(locate)){
+			wd.findElement(By.id(locString)).click();
 		}
 		
 	}

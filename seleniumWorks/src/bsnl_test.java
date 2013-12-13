@@ -1,6 +1,8 @@
 
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,6 +13,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.Keyboard;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -93,7 +97,22 @@ public static void main (String a[]) throws Exception{
 					int i=0;
 					for(WebElement cellValue: cell){
 						if(i==0){
-							System.out.println("Name is "+cellValue.getText());
+							String textName = cellValue.getText();
+							System.out.println("Name is "+textName);
+							
+							/*List<WebElement> aLink = cellValue.findElements(By.tagName("a"));
+							for(WebElement clickA : aLink){
+								clickA.click();
+								Thread.sleep(2000);
+								System.out.println(driver.getPageSource());
+								
+								WebElement backLink111 = driver.findElement(By.id("customerDetails:back"));
+								backLink111.click();
+							}
+							*/
+							//getDetails(textName);
+							
+							
 							
 						}
 						if(i==1){
@@ -136,5 +155,25 @@ public static void main (String a[]) throws Exception{
 	public void testTearDown(){
 		driver.close();
 		driver.quit();
+	}
+	
+	public void getDetails(String textName){
+		WebElement clickNameLink = driver.findElement(By.linkText(textName));
+		
+		new Actions(driver).moveToElement(clickNameLink).click().perform();
+		//clickNameLink.click();
+		driver.manage().timeouts().pageLoadTimeout(4000, TimeUnit.SECONDS);
+		
+		WebElement table1 = driver.findElement(By.cssSelector("#contentSubscriber table"));
+		List<WebElement> allRows1 = table1.findElements(By.tagName("tr"));
+		for(WebElement row1 : allRows1){
+			System.out.println(row1.getText());
+		}
+		
+		WebElement backLink = driver.findElement(By.className("back"));
+		System.out.println(backLink.getAttribute("href"));
+		
+		backLink.click();
+		
 	}
 }

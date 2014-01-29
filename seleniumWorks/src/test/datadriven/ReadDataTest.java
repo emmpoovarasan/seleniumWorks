@@ -33,6 +33,7 @@ public class ReadDataTest {
 		//driver.get("http://www.gmail.com");
 		driver.get("https://guest:guest@sandbox.easymedmobile.com");
 		driver.navigate().refresh();
+		driver.manage().window().maximize();
 	}
 	@Test
 	public void LoginTest() throws InterruptedException{
